@@ -1339,6 +1339,14 @@ declare namespace pxt.editor {
 
     interface BaseAssetEditorResponse {
         id?: number;
+        /**
+         * indicate if operation started or completed successfully
+         */
+        success: boolean;
+        /**
+         * Error object if any
+         */
+        error?: any;
     }
 
     interface OpenAssetEditorResponse extends BaseAssetEditorResponse {
