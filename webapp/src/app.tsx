@@ -83,6 +83,7 @@ import { Tour } from "./components/onboarding/Tour";
 import { parseTourStepsAsync } from "./onboarding";
 import { initGitHubDb } from "./idbworkspace";
 import { BlockDefinition, CategoryNameID } from "./toolbox";
+import { MinecraftAuthClient } from "./minecraftAuthClient";
 
 pxt.blocks.requirePxtBlockly = () => pxtblockly as any;
 pxt.blocks.requireBlockly = () => Blockly;
@@ -5970,10 +5971,14 @@ document.addEventListener("DOMContentLoaded", async () => {
         pxt.blocks.showBlockIdInTooltip = true;
     }
 
-    initGitHubDb();
-
     pxt.perf.measureStart(Measurements.SetAppTarget);
     pkg.setupAppTarget((window as any).pxtTargetBundle);
+
+    initGitHubDb();
+
+    if (pxt.auth.proxyIdentityThroughIPC()) {
+        auth.overrideAuthClient(() => new MinecraftAuthClient());
+    }
 
     // DO NOT put any async code before this line! The serviceworker must be initialized before
     // the window load event fires
